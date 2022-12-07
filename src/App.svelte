@@ -3,6 +3,7 @@
   import Page3 from "./Page3.svelte";
   import Page4 from "./Page4.svelte";
   import Page5 from "./Page5.svelte";
+  import Page6 from "./Page6.svelte";
   import Form from "./Form.svelte";
   import { openGPCFile } from "./gpc";
 
@@ -41,6 +42,7 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 />
+
 {#if page == 0}
   <main>
     <h1 class="glow pointer">GSIM/MoviolaW Comparison Tool</h1>
@@ -121,11 +123,11 @@
       }}><i class="fa fa-fw fa-print" /> Print</a
     >
   </div>
-
   <Page2 _fileNames={fileNames} />
   <main2>
     <br />
     <br />
+    <p class="pageno">content: "Page " counter(page) " of " counter(pages);</p>
     <div class="footer">
       <div style="float:right;">
         <br /><button
@@ -335,6 +337,10 @@
   </main5>
 {/if}
 
+{#if page == 5}
+  <Page6 />
+{/if}
+
 <style global>
   main {
     padding: 1em;
@@ -494,14 +500,26 @@
   .pointer {
     cursor: pointer;
   }
+  .pageno {
+    display: none;
+  }
+
   @media print {
     @page {
-      margin: auto;
-      size: A4;
+      margin: 11mm 17mm 17mm 17mm;
+      size: 21.59cm 13.97cm;
     }
-    body {
-      font-size: 12pt;
-      font-family: serif;
+    h1 {
+      display: none;
+    }
+    .navbar,
+    .footer {
+      display: none;
+    }
+    .pageno {
+      display: contents;
+      bottom: 0;
+      right: 0;
     }
   }
 </style>

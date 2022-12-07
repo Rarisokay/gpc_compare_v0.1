@@ -8,8 +8,7 @@
   import { openGPCFile } from "./gpc";
 
   let page = 0;
-  174 / 15;
-
+  let __greenInserts;
   let fileNames = ["No File1 Chosen", "No File2 Chosen"];
 
   const nextPage = () => {
@@ -193,9 +192,9 @@
         }}><i class="fa fa-fw fa-print" /> Print</a
       >
     </div>
-    <Page3 _fileNames={fileNames} />
+    <Page3 />
     <main3>
-      <br /><br /><br /><br />
+      <br />
       <div class="footer">
         <div style="float:right;">
           <br /><button
@@ -215,9 +214,8 @@
             }}>Next &raquo</button
           >
         </div>
-        <h6>Data Aunz</h6>
-      </div>
-    </main3>
+      </div></main3
+    >
   {/if}
 
   {#if page == 3}
@@ -256,9 +254,9 @@
         }}><i class="fa fa-fw fa-print" /> Print</a
       >
     </div>
-    <Page4 _fileNames={fileNames} />
+    <Page4 />
     <main4>
-      <br /><br /><br /><br />
+      <br />
       <div class="footer">
         <div style="float:right;">
           <br /><button
@@ -278,9 +276,8 @@
             }}>Next &raquo</button
           >
         </div>
-        <h6>Developed by Data Aunz</h6>
-      </div>
-    </main4>
+      </div></main4
+    >
   {/if}
 
   {#if page == 4}

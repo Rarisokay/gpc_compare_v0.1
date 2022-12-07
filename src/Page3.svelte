@@ -1,41 +1,22 @@
 <script>
-  import { sortBlockType } from "./sorting"; //
-  function myFunction() {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
+  import { greenInserts, _insertData1 } from "./store";
+  import { myFunction } from "./gpc";
 
-  import { readGPCFile } from "./gpc";
+  let fileReady = false;
+  let _greenInserts = [];
+  let insertData1;
 
-  export let _fileNames;
-  let insertData1 = [];
-  let insertData2 = [];
-
-  readGPCFile(_fileNames[0]).then((data1) => {
-    insertData1 = sortBlockType(data1);
-    readGPCFile(_fileNames[1]).then((data2) => {
-      insertData2 = sortBlockType(data2);
-    });
+  _insertData1.subscribe((value) => {
+    insertData1 = value;
+  });
+  greenInserts.subscribe((value) => {
+    _greenInserts = value;
+    fileReady = true;
   });
 </script>
 
 <main3>
   <h2 class="pointer">Deleted Items</h2>
-
   <p class="pointer">
     Report delete colour = <strong style="color:green">Green</strong>
   </p>
@@ -50,18 +31,16 @@
   />
 
   <table id="myTable">
-    <thead>
-      <tr class="header">
-        <th colspan="3">1st GPC file</th>
-      </tr>
-      <tr class="header">
-        <th>Name</th>
-        <th>Bit</th>
-        <th>Mnemonic</th>
-      </tr>
-    </thead>
-    <tbody>
-      {#each insertData1 as data1}
+    <tr class="header">
+      <th colspan="3">1st GPC file</th>
+    </tr>
+    <tr class="header">
+      <th>Name</th>
+      <th>Bit</th>
+      <th>Mnemonic</th>
+    </tr>
+    {#each insertData1 as data1}
+      {#if _greenInserts.includes(data1.name)}
         {#each data1.bits as bit, i}
           <tr>
             {#if i == 0}
@@ -71,8 +50,8 @@
             <td>{data1.mnemonics[i]}</td>
           </tr>
         {/each}
-      {/each}
-    </tbody>
+      {/if}
+    {/each}
   </table>
 </main3>
 

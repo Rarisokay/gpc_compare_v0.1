@@ -1,51 +1,18 @@
 <script>
-  import { sortBlockType } from "./sorting"; //
-  function myFunction() {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
+  import { redInserts, _insertData2 } from "./store";
+  import { myFunction } from "./gpc";
 
-  const nextPage = () => {
-    readGPC();
-    page++;
-  };
-  const previousPage = () => {
-    page--;
-  };
-  import { readGPCFile } from "./gpc";
+  let fileReady = false;
+  let _redInserts = [];
+  let insertData2;
 
-  export let _fileNames;
-  let insertData1 = [];
-  let insertData2 = [];
-
-  readGPCFile(_fileNames[0]).then((data1) => {
-    insertData1 = sortBlockType(data1);
-    readGPCFile(_fileNames[1]).then((data2) => {
-      insertData2 = sortBlockType(data2);
-    });
+  _insertData2.subscribe((value) => {
+    insertData2 = value;
   });
-
-  function printPageArea(areaID) {
-    var printContent = document.getElementById(areaID).innerHTML;
-    var originalContent = document.body.innerHTML;
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = originalContent;
-  }
+  redInserts.subscribe((value) => {
+    _redInserts = value;
+    fileReady = true;
+  });
 </script>
 
 <main4>
@@ -73,15 +40,17 @@
       <th>Mnemonic</th>
     </tr>
     {#each insertData2 as data2}
-      {#each data2.bits as bit, i}
-        <tr>
-          {#if i == 0}
-            <td rowspan={data2.bits.length}>{data2.name}</td>
-          {/if}
-          <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-          <td>{data2.mnemonics[i]}</td>
-        </tr>
-      {/each}
+      {#if _redInserts.includes(data2.name)}
+        {#each data2.bits as bit, i}
+          <tr>
+            {#if i == 0}
+              <td rowspan={data2.bits.length}>{data2.name}</td>
+            {/if}
+            <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+            <td>{data2.mnemonics[i]}</td>
+          </tr>
+        {/each}
+      {/if}
     {/each}
   </table>
 </main4>

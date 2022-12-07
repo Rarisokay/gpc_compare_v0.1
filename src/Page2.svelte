@@ -1,34 +1,49 @@
 <script>
-  import { readGPCFile } from "./gpc";
+  import { readGPCFile, myFunction } from "./gpc";
   import { sortBlockType } from "./sorting";
-  let rowindex = 0;
+  import { onMount } from "svelte";
+  import { Compare } from "./compare";
+  import {
+    greenInserts,
+    redInserts,
+    deleteInsert,
+    _insertData1,
+    _insertData2,
+  } from "./store";
   export let _fileNames;
   let insertData1 = [];
   let insertData2 = [];
+  let _Compare;
+  let fileReady = false;
 
-  function myFunction() {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
+  const readGPC = () => {
+    readGPCFile(_fileNames[0]).then((data1) => {
+      insertData1 = sortBlockType(data1);
+      readGPCFile(_fileNames[1]).then((data2) => {
+        insertData2 = sortBlockType(data2);
+        _Compare = new Compare(insertData1, insertData2);
+        greenInserts.update((value) => {
+          return _Compare.greenInserts;
+        });
+        redInserts.update((value) => {
+          return _Compare.redInserts;
+        });
+        _insertData1.update((value) => {
+          return insertData1;
+        });
+        _insertData2.update((value) => {
+          return insertData2;
+        });
+        fileReady = true;
+        deleteInsert.update((value) => true);
+      });
+    });
+  };
 
-  readGPCFile(_fileNames[0]).then((data1) => {
-    insertData1 = sortBlockType(data1);
-    readGPCFile(_fileNames[1]).then((data2) => {
-      insertData2 = sortBlockType(data2);
+  onMount(() => {
+    readGPC();
+    deleteInsert.update((value) => {
+      value = true;
     });
   });
 </script>
@@ -39,76 +54,82 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 />
 
-<main2>
-  <br /><br />
+{#if fileReady}
+  <main2>
+    <br /><br />
 
-  <h2 class="pointer">Updated Items</h2>
-  <p class="pointer">
-    Report insert colour = <strong style="color:red">Red</strong>
-  </p>
-  <p class="pointer">
-    Report delete colour = <strong style="color:green">Green</strong>
-  </p>
+    <h2 class="pointer">Updated Items</h2>
+    <p class="pointer">
+      Report insert colour = <strong style="color:red">Red</strong>
+    </p>
+    <p class="pointer">
+      Report delete colour = <strong style="color:green">Green</strong>
+    </p>
 
-  <input
-    type="text"
-    id="myInput"
-    on:keyup={() => {
-      myFunction();
-    }}
-    placeholder="Search for names.."
-    title="Type in a name"
-  />
-  <div class="row">
-    <div class="column">
-      <table id="myTable">
-        <tr class="header">
-          <th colspan="3">1st GPC file</th>
-        </tr>
-        <tr class="header">
-          <th>Item</th>
-          <th>Bit</th>
-          <th>Mnemonic</th>
-        </tr>
-        {#each insertData1 as data1}
-          {#each data1.bits as bit, i}
-            <tr>
-              {#if i == 0}
-                <td rowspan={data1.bits.length}>{data1.name}</td>
-              {/if}
-              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-              <td>{data1.mnemonics[i]}</td>
-            </tr>
+    <input
+      type="text"
+      id="myInput"
+      on:keyup={() => {
+        myFunction();
+      }}
+      placeholder="Search for names.."
+      title="Type in a name"
+    />
+    <div class="row">
+      <div class="column">
+        <table id="myTable">
+          <tr class="header">
+            <th colspan="3">1st GPC file</th>
+          </tr>
+          <tr class="header">
+            <th>Item</th>
+            <th>Bit</th>
+            <th>Mnemonic</th>
+          </tr>
+          {#each insertData1 as data1, index_0}
+            {#if !_Compare.greenInserts.some((d) => d === data1.name) && !_Compare.greenObjs[index_0].greenBits.length == 0}
+              {#each data1.bits as bit, i}
+                <tr>
+                  {#if i == 0}
+                    <td rowspan={data1.bits.length}>{data1.name}</td>
+                  {/if}
+                  <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+                  <td>{data1.mnemonics[i]}</td>
+                </tr>
+              {/each}
+            {/if}
           {/each}
-        {/each}
-      </table>
-    </div>
+        </table>
+      </div>
 
-    <div class="column">
-      <table id="myTable">
-        <tr class="header">
-          <th colspan="3">2nd GPC file</th>
-        </tr>
-        <tr class="header">
-          <th>Name</th>
-          <th>Bit</th>
-          <th>Mnemonic</th>
-        </tr>
-        {#each insertData2 as data2}
-          {#each data2.bits as bit, i}
-            <tr>
-              {#if i == 0}
-                <td rowspan={data2.bits.length}>{data2.name}</td>
-              {/if}
-              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-              <td>{data2.mnemonics[i]}</td>
-            </tr>
+      <div class="column">
+        <table id="myTable">
+          <tr class="header">
+            <th colspan="3">2nd GPC file</th>
+          </tr>
+          <tr class="header">
+            <th>Name</th>
+            <th>Bit</th>
+            <th>Mnemonic</th>
+          </tr>
+          {#each insertData2 as data2, index_0}
+            {#if !_Compare.redInserts.some((d) => d === data2.name) && !_Compare.redObjs[index_0].redBits.length == 0}
+              {#each data2.bits as bit, i}
+                <tr>
+                  {#if i == 0}
+                    <td rowspan={data2.bits.length}>{data2.name}</td>
+                  {/if}
+                  <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+                  <td>{data2.mnemonics[i]}</td>
+                </tr>
+              {/each}
+            {/if}
           {/each}
-        {/each}
-      </table>
+        </table>
+      </div>
     </div>
-  </div>
-</main2>
+  </main2>
+{/if}
 
 <style>
   h2 {

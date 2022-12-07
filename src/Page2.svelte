@@ -40,9 +40,6 @@
 />
 
 <main2>
-  <br /><br />
-
-  <h2 class="pointer">Updated Items</h2>
   <p class="pointer">
     Report insert colour = <strong style="color:red">Red</strong>
   </p>
@@ -53,6 +50,7 @@
   <input
     type="text"
     id="myInput"
+    class="notprint"
     on:keyup={() => {
       myFunction();
     }}
@@ -62,49 +60,57 @@
   <div class="row">
     <div class="column">
       <table id="myTable">
-        <tr class="header">
-          <th colspan="3">1st GPC file</th>
-        </tr>
-        <tr class="header">
-          <th>Item</th>
-          <th>Bit</th>
-          <th>Mnemonic</th>
-        </tr>
-        {#each insertData1 as data1}
-          {#each data1.bits as bit, i}
-            <tr>
-              {#if i == 0}
-                <td rowspan={data1.bits.length}>{data1.name}</td>
-              {/if}
-              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-              <td>{data1.mnemonics[i]}</td>
-            </tr>
+        <thead>
+          <tr class="header">
+            <th colspan="3">1st GPC file</th>
+          </tr>
+          <tr class="header">
+            <th>Item</th>
+            <th>Bit</th>
+            <th>Mnemonic</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each insertData1 as data1}
+            {#each data1.bits as bit, i}
+              <tr>
+                {#if i == 0}
+                  <td rowspan={data1.bits.length}>{data1.name}</td>
+                {/if}
+                <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+                <td>{data1.mnemonics[i]}</td>
+              </tr>
+            {/each}
           {/each}
-        {/each}
+        </tbody>
       </table>
     </div>
 
     <div class="column">
       <table id="myTable">
-        <tr class="header">
-          <th colspan="3">2nd GPC file</th>
-        </tr>
-        <tr class="header">
-          <th>Name</th>
-          <th>Bit</th>
-          <th>Mnemonic</th>
-        </tr>
-        {#each insertData2 as data2}
-          {#each data2.bits as bit, i}
-            <tr>
-              {#if i == 0}
-                <td rowspan={data2.bits.length}>{data2.name}</td>
-              {/if}
-              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-              <td>{data2.mnemonics[i]}</td>
-            </tr>
+        <thead>
+          <tr class="header">
+            <th colspan="3">2nd GPC file</th>
+          </tr>
+          <tr class="header">
+            <th>Name</th>
+            <th>Bit</th>
+            <th>Mnemonic</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each insertData2 as data2}
+            {#each data2.bits as bit, i}
+              <tr>
+                {#if i == 0}
+                  <td rowspan={data2.bits.length}>{data2.name}</td>
+                {/if}
+                <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+                <td>{data2.mnemonics[i]}</td>
+              </tr>
+            {/each}
           {/each}
-        {/each}
+        </tbody>
       </table>
     </div>
   </div>
@@ -120,16 +126,17 @@
   }
   p {
     color: #000000;
-    font-size: large;
+    font-size: medium;
     font-weight: 100;
   }
 
-  Main2 {
+  main2 {
     padding: 1em;
     max-width: 240px;
     margin: 0 Auto;
     height: 100%;
     font-family: monospace;
+    margin-bottom: 60px;
   }
   @media (min-width: 640px) {
     main {
@@ -202,7 +209,7 @@
     text-align: left;
     padding: 12px;
     border: 1px solid #ddd;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   #myTable tr {
@@ -225,6 +232,10 @@
   .pointer {
     cursor: pointer;
   }
+  .detail {
+    display: none;
+  }
+
   @media print {
     @page {
       margin: auto;
@@ -233,14 +244,25 @@
     h1 {
       display: none;
     }
-    #myTable tr.header {
-      position: absolute;
-      width: 100%;
-      page-break-after: left;
-      display: block;
+
+    #myTable tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
     }
-    #myTable {
-      width: 100;
+    #myTable td {
+      text-align: left;
+      padding: 12px;
+      border: 1px solid #ddd;
+      font-size: 12px;
+      page-break-inside: avoid;
+    }
+    .detail {
+      display: contents;
+      bottom: 0;
+      right: 0;
+    }
+    .notprint {
+      display: none;
     }
   }
 </style>

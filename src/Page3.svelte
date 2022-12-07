@@ -50,25 +50,29 @@
   />
 
   <table id="myTable">
-    <tr class="header">
-      <th colspan="3">1st GPC file</th>
-    </tr>
-    <tr class="header">
-      <th>Name</th>
-      <th>Bit</th>
-      <th>Mnemonic</th>
-    </tr>
-    {#each insertData1 as data1}
-      {#each data1.bits as bit, i}
-        <tr>
-          {#if i == 0}
-            <td rowspan={data1.bits.length}>{data1.name}</td>
-          {/if}
-          <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-          <td>{data1.mnemonics[i]}</td>
-        </tr>
+    <thead>
+      <tr class="header">
+        <th colspan="3">1st GPC file</th>
+      </tr>
+      <tr class="header">
+        <th>Name</th>
+        <th>Bit</th>
+        <th>Mnemonic</th>
+      </tr>
+    </thead>
+    <tbody>
+      {#each insertData1 as data1}
+        {#each data1.bits as bit, i}
+          <tr>
+            {#if i == 0}
+              <td rowspan={data1.bits.length}>{data1.name}</td>
+            {/if}
+            <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+            <td>{data1.mnemonics[i]}</td>
+          </tr>
+        {/each}
       {/each}
-    {/each}
+    </tbody>
   </table>
 </main3>
 
@@ -82,7 +86,7 @@
   }
   p {
     color: #000000;
-    font-size: large;
+    font-size: medium;
     font-weight: 100;
   }
 

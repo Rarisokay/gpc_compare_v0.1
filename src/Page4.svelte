@@ -96,7 +96,7 @@
   }
   p {
     color: #000000;
-    font-size: large;
+    font-size: medium;
     font-weight: 100;
   }
 

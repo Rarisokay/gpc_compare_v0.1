@@ -46,83 +46,80 @@
 <main5>
   <br /><br />
 
-  <a
-    href="javascript:void(0);"
-    on:click={() => {
-      printPageArea("printableArea");
-    }}>Print</a
-  >
-  <div id="printableArea">
-    <h2 class="pointer">Show All Items</h2>
-    <p class="pointer">
-      Report insert colour = <strong style="color:red">Red</strong>
-    </p>
-    <p class="pointer">
-      Report delete colour = <strong style="color:green">Green</strong>
-    </p>
+  <h2 class="pointer">Show All Items</h2>
+  <p class="pointer">
+    Report insert colour = <strong style="color:red">Red</strong>
+  </p>
+  <p class="pointer">
+    Report delete colour = <strong style="color:green">Green</strong>
+  </p>
 
-    <input
-      type="text"
-      id="myInput"
-      on:keyup={() => {
-        myFunction();
-      }}
-      placeholder="Search for names.."
-      title="Type in a name"
-    />
-    <div class="row">
-      <div class="column">
-        <table id="myTable">
-          <tr class="header">
-            <th colspan="3">1st GPC file</th>
-          </tr>
-          <tr class="header">
-            <th>Item</th>
-            <th>Bit</th>
-            <th>Mnemonic</th>
-          </tr>
-          {#each insertData1 as data1}
-            {#each data1.bits as bit, i}
-              <tr>
-                {#if i == 0}
-                  <td rowspan={data1.bits.length}>{data1.name}</td>
-                {/if}
-                <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-                <td>{data1.mnemonics[i]}</td>
-              </tr>
-            {/each}
+  <input
+    type="text"
+    id="myInput"
+    on:keyup={() => {
+      myFunction();
+    }}
+    placeholder="Search for names.."
+    title="Type in a name"
+  />
+  <div class="row">
+    <div class="column">
+      <table id="myTable">
+        <tr class="header">
+          <th colspan="3">1st GPC file</th>
+        </tr>
+        <tr class="header">
+          <th>Item</th>
+          <th>Bit</th>
+          <th>Mnemonic</th>
+        </tr>
+        {#each insertData1 as data1}
+          {#each data1.bits as bit, i}
+            <tr>
+              {#if i == 0}
+                <td rowspan={data1.bits.length}>{data1.name}</td>
+              {/if}
+              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+              <td>{data1.mnemonics[i]}</td>
+            </tr>
           {/each}
-        </table>
-      </div>
+        {/each}
+      </table>
+    </div>
 
-      <div class="column">
-        <table id="myTable">
-          <tr class="header">
-            <th colspan="3">2nd GPC file</th>
-          </tr>
-          <tr class="header">
-            <th>Name</th>
-            <th>Bit</th>
-            <th>Mnemonic</th>
-          </tr>
-          {#each insertData2 as data2}
-            {#each data2.bits as bit, i}
-              <tr>
-                {#if i == 0}
-                  <td rowspan={data2.bits.length}>{data2.name}</td>
-                {/if}
-                <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-                <td>{data2.mnemonics[i]}</td>
-              </tr>
-            {/each}
+    <div class="column">
+      <table id="myTable">
+        <tr class="header">
+          <th colspan="3">2nd GPC file</th>
+        </tr>
+        <tr class="header">
+          <th>Name</th>
+          <th>Bit</th>
+          <th>Mnemonic</th>
+        </tr>
+        {#each insertData2 as data2}
+          {#each data2.bits as bit, i}
+            <tr>
+              {#if i == 0}
+                <td rowspan={data2.bits.length}>{data2.name}</td>
+              {/if}
+              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+              <td>{data2.mnemonics[i]}</td>
+            </tr>
           {/each}
-        </table>
-      </div>
+        {/each}
+      </table>
     </div>
   </div>
 </main5>
 
 <style>
+  p {
+    color: #000000;
+    font-size: medium;
+    font-weight: 100;
+  }
   h2 {
     color: #80489c;
     font-weight: bold;
@@ -202,7 +199,7 @@
     text-align: left;
     padding: 12px;
     border: 1px solid #ddd;
-    font-size: 12px;
+    font-size: 16px;
   }
 
   #myTable tr {

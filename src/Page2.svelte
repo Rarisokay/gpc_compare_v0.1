@@ -31,14 +31,6 @@
       insertData2 = sortBlockType(data2);
     });
   });
-
-  function printPageArea(areaID) {
-    var printContent = document.getElementById(areaID).innerHTML;
-    var originalContent = document.body.innerHTML;
-    document.body.innerHTML = printContent;
-    window.print();
-    document.body.innerHTML = originalContent;
-  }
 </script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,78 +42,70 @@
 <main2>
   <br /><br />
 
-  <a
-    href="javascript:void(0);"
-    on:click={() => {
-      printPageArea("printableArea");
-    }}>Print</a
-  >
-  <div id="printableArea">
-    <h2 class="pointer">Updated Items</h2>
-    <p class="pointer">
-      Report insert colour = <strong style="color:red">Red</strong>
-    </p>
-    <p class="pointer">
-      Report delete colour = <strong style="color:green">Green</strong>
-    </p>
+  <h2 class="pointer">Updated Items</h2>
+  <p class="pointer">
+    Report insert colour = <strong style="color:red">Red</strong>
+  </p>
+  <p class="pointer">
+    Report delete colour = <strong style="color:green">Green</strong>
+  </p>
 
-    <input
-      type="text"
-      id="myInput"
-      on:keyup={() => {
-        myFunction();
-      }}
-      placeholder="Search for names.."
-      title="Type in a name"
-    />
-    <div class="row">
-      <div class="column">
-        <table id="myTable">
-          <tr class="header">
-            <th colspan="3">1st GPC file</th>
-          </tr>
-          <tr class="header">
-            <th>Item</th>
-            <th>Bit</th>
-            <th>Mnemonic</th>
-          </tr>
-          {#each insertData1 as data1}
-            {#each data1.bits as bit, i}
-              <tr>
-                {#if i == 0}
-                  <td rowspan={data1.bits.length}>{data1.name}</td>
-                {/if}
-                <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-                <td>{data1.mnemonics[i]}</td>
-              </tr>
-            {/each}
+  <input
+    type="text"
+    id="myInput"
+    on:keyup={() => {
+      myFunction();
+    }}
+    placeholder="Search for names.."
+    title="Type in a name"
+  />
+  <div class="row">
+    <div class="column">
+      <table id="myTable">
+        <tr class="header">
+          <th colspan="3">1st GPC file</th>
+        </tr>
+        <tr class="header">
+          <th>Item</th>
+          <th>Bit</th>
+          <th>Mnemonic</th>
+        </tr>
+        {#each insertData1 as data1}
+          {#each data1.bits as bit, i}
+            <tr>
+              {#if i == 0}
+                <td rowspan={data1.bits.length}>{data1.name}</td>
+              {/if}
+              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+              <td>{data1.mnemonics[i]}</td>
+            </tr>
           {/each}
-        </table>
-      </div>
+        {/each}
+      </table>
+    </div>
 
-      <div class="column">
-        <table id="myTable">
-          <tr class="header">
-            <th colspan="3">2nd GPC file</th>
-          </tr>
-          <tr class="header">
-            <th>Name</th>
-            <th>Bit</th>
-            <th>Mnemonic</th>
-          </tr>
-          {#each insertData2 as data2}
-            {#each data2.bits as bit, i}
-              <tr>
-                {#if i == 0}
-                  <td rowspan={data2.bits.length}>{data2.name}</td>
-                {/if}
-                <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
-                <td>{data2.mnemonics[i]}</td>
-              </tr>
-            {/each}
+    <div class="column">
+      <table id="myTable">
+        <tr class="header">
+          <th colspan="3">2nd GPC file</th>
+        </tr>
+        <tr class="header">
+          <th>Name</th>
+          <th>Bit</th>
+          <th>Mnemonic</th>
+        </tr>
+        {#each insertData2 as data2}
+          {#each data2.bits as bit, i}
+            <tr>
+              {#if i == 0}
+                <td rowspan={data2.bits.length}>{data2.name}</td>
+              {/if}
+              <td class={i % 2 == 0 ? "deleted" : "inserted"}>{bit}</td>
+              <td>{data2.mnemonics[i]}</td>
+            </tr>
           {/each}
-        </table>
-      </div>
+        {/each}
+      </table>
     </div>
   </div>
 </main2>
@@ -229,15 +213,7 @@
   #myTable tr:hover {
     background-color: #f1f1f1;
   }
-  .footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #0794a7;
-    color: white;
-    text-align: center;
-  }
+
   .deleted {
     color: green;
     background-color: rgb(213, 250, 244);
@@ -254,13 +230,17 @@
       margin: auto;
       size: A4;
     }
-    body {
-      font-size: 12pt;
-      font-family: serif;
+    h1 {
+      display: none;
     }
-  }
-  .printfont {
-    font-size: 12px;
-    font-family: monospace;
+    #myTable tr.header {
+      position: absolute;
+      width: 100%;
+      page-break-after: left;
+      display: block;
+    }
+    #myTable {
+      width: 100;
+    }
   }
 </style>

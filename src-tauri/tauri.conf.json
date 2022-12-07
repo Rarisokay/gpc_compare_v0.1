@@ -52,10 +52,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
         "title": "GPC Compare",
-        "width": 800
+        "minHeight": 600,
+        "minWidth": 800
       }
     ]
   }

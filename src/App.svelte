@@ -42,304 +42,312 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
 />
+<link rel="stylesheet" href="print.css" media="print" />
+<body>
+  {#if page == 0}
+    <main>
+      <h1 class="glow pointer">GSIM/MoviolaW Comparison Tool</h1>
+      <h2 class="pointer">Please select .GPC files</h2>
+      <p>Space in the filename will cause error</p>
 
-{#if page == 0}
-  <main>
-    <h1 class="glow pointer">GSIM/MoviolaW Comparison Tool</h1>
-    <h2 class="pointer">Please select .GPC files</h2>
-    <p>Space in the filename will cause error</p>
+      <div style="float:center;">
+        <button
+          type="button"
+          id="gpc1"
+          class="choose"
+          on:click={() => {
+            openFile(0);
+          }}
+          value="Open File 1">OpenFile1</button
+        >
+        <p>{fileNames[0].split("\\").slice(-1)}</p>
 
-    <div style="float:center;">
-      <button
-        type="button"
-        id="gpc1"
-        class="choose"
-        on:click={() => {
-          openFile(0);
+        <button
+          type="button"
+          id="gpc2"
+          class="choose"
+          on:click={() => {
+            openFile(1);
+          }}
+          value="Open File 2">OpenFile2</button
+        >
+      </div>
+
+      <p>{fileNames[1].split("\\").slice(-1)}</p>
+
+      <Form
+        next={() => {
+          nextPage();
         }}
-        value="Open File 1">OpenFile1</button
-      >
-      <p>{fileNames[0].split("\\").slice(-1)}</p>
+        input={_input}
+      />
 
-      <button
-        type="button"
-        id="gpc2"
-        class="choose"
+      <div class="footer">
+        <h6>Developed by Data Aunz</h6>
+      </div>
+    </main>
+  {/if}
+
+  {#if page == 1}
+    <div class="navbar" style="font-family: monospace;">
+      <a
+        href="#"
         on:click={() => {
-          openFile(1);
-        }}
-        value="Open File 2">OpenFile2</button
+          goToPage(0);
+        }}><i class="fa fa-fw fa-home" /> Home</a
+      >
+      <a class="active" href="#"
+        ><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(2);
+        }}><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(3);
+        }}><i class="fa fa-fw fa-plus" /> Inserted Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(4);
+        }}><i class="fa fa-fw fa-square" /> Show All</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          print();
+        }}><i class="fa fa-fw fa-print" /> Print</a
       >
     </div>
-
-    <p>{fileNames[1].split("\\").slice(-1)}</p>
-
-    <Form
-      next={() => {
-        nextPage();
-      }}
-      input={_input}
-    />
-
-    <div class="footer">
-      <h6>Developed by Data Aunz</h6>
-    </div>
-  </main>
-{/if}
-
-{#if page == 1}
-  <div class="navbar" style="font-family: monospace;">
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(0);
-      }}><i class="fa fa-fw fa-home" /> Home</a
-    >
-    <a class="active" href="#"
-      ><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(2);
-      }}><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(3);
-      }}><i class="fa fa-fw fa-plus" /> Inserted Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(4);
-      }}><i class="fa fa-fw fa-square" /> Show All</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        print();
-      }}><i class="fa fa-fw fa-print" /> Print</a
-    >
-  </div>
-  <Page2 _fileNames={fileNames} />
-  <main2>
-    <br />
-    <br />
-    <p class="pageno">content: "Page " counter(page) " of " counter(pages);</p>
-    <div class="footer">
-      <div style="float:right;">
-        <br /><button
-          type="button"
-          id="prevBtn"
-          class="previous"
-          on:click={() => {
-            previousPage();
-          }}>&laquo; Previous</button
-        >
-        <button
-          type="button"
-          id="nextBtn"
-          class="next"
-          on:click={() => {
-            nextPage();
-          }}>Next &raquo</button
-        >
+    <h1 class="pointer">Updated Items</h1>
+    <h5 class="detail">Designer:{_input.designername}</h5>
+    <Page2 _fileNames={fileNames} />
+    <main2>
+      <br />
+      <br />
+      <p class="pageno">
+        content: "Page " counter(page) " of " counter(pages);
+      </p>
+      <div class="footer">
+        <div style="float:right;">
+          <br /><button
+            type="button"
+            id="prevBtn"
+            class="previous"
+            on:click={() => {
+              previousPage();
+            }}>&laquo; Previous</button
+          >
+          <button
+            type="button"
+            id="nextBtn"
+            class="next"
+            on:click={() => {
+              nextPage();
+            }}>Next &raquo</button
+          >
+        </div>
+        <h6>Data Aunz</h6>
       </div>
-      <h6>Data Aunz</h6>
-    </div>
-  </main2>
-{/if}
+    </main2>
+  {/if}
 
-{#if page == 2}
-  <div class="navbar" style="font-family: monospace;">
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(0);
-      }}><i class="fa fa-fw fa-home" /> Home</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(1);
-      }}><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
-    >
-    <a class="active" href="#"
-      ><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(3);
-      }}><i class="fa fa-fw fa-plus" /> Inserted Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(4);
-      }}><i class="fa fa-fw fa-square" /> Show All</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        print();
-      }}><i class="fa fa-fw fa-print" /> Print</a
-    >
-  </div>
-  <Page3 _fileNames={fileNames} />
-  <main3>
-    <br />
-    <div class="footer">
-      <div style="float:right;">
-        <br /><button
-          type="button"
-          id="prevBtn"
-          class="previous"
-          on:click={() => {
-            previousPage();
-          }}>&laquo; Previous</button
-        >
-        <button
-          type="button"
-          id="nextBtn"
-          class="next"
-          on:click={() => {
-            nextPage();
-          }}>Next &raquo</button
-        >
+  {#if page == 2}
+    <div class="navbar" style="font-family: monospace;">
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(0);
+        }}><i class="fa fa-fw fa-home" /> Home</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(1);
+        }}><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
+      >
+      <a class="active" href="#"
+        ><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(3);
+        }}><i class="fa fa-fw fa-plus" /> Inserted Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(4);
+        }}><i class="fa fa-fw fa-square" /> Show All</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          print();
+        }}><i class="fa fa-fw fa-print" /> Print</a
+      >
+    </div>
+    <Page3 _fileNames={fileNames} />
+    <main3>
+      <br /><br /><br /><br />
+      <div class="footer">
+        <div style="float:right;">
+          <br /><button
+            type="button"
+            id="prevBtn"
+            class="previous"
+            on:click={() => {
+              previousPage();
+            }}>&laquo; Previous</button
+          >
+          <button
+            type="button"
+            id="nextBtn"
+            class="next"
+            on:click={() => {
+              nextPage();
+            }}>Next &raquo</button
+          >
+        </div>
+        <h6>Data Aunz</h6>
       </div>
-      <h6>Data Aunz</h6>
-    </div>
-  </main3>
-{/if}
+    </main3>
+  {/if}
 
-{#if page == 3}
-  <div class="navbar" style="font-family: monospace;">
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(0);
-      }}><i class="fa fa-fw fa-home" /> Home</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(1);
-      }}><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(2);
-      }}><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
-    >
-    <a class="active" href="#"><i class="fa fa-fw fa-plus" /> Inserted Items</a>
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(4);
-      }}><i class="fa fa-fw fa-square" /> Show All</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        print();
-      }}><i class="fa fa-fw fa-print" /> Print</a
-    >
-  </div>
-  <Page4 _fileNames={fileNames} />
-  <main4>
-    <br />
-    <div class="footer">
-      <div style="float:right;">
-        <br /><button
-          type="button"
-          id="prevBtn"
-          class="previous"
-          on:click={() => {
-            previousPage();
-          }}>&laquo; Previous</button
-        >
-        <button
-          type="button"
-          id="nextBtn"
-          class="next"
-          on:click={() => {
-            nextPage();
-          }}>Next &raquo</button
-        >
+  {#if page == 3}
+    <div class="navbar" style="font-family: monospace;">
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(0);
+        }}><i class="fa fa-fw fa-home" /> Home</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(1);
+        }}><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(2);
+        }}><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
+      >
+      <a class="active" href="#"
+        ><i class="fa fa-fw fa-plus" /> Inserted Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(4);
+        }}><i class="fa fa-fw fa-square" /> Show All</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          print();
+        }}><i class="fa fa-fw fa-print" /> Print</a
+      >
+    </div>
+    <Page4 _fileNames={fileNames} />
+    <main4>
+      <br /><br /><br /><br />
+      <div class="footer">
+        <div style="float:right;">
+          <br /><button
+            type="button"
+            id="prevBtn"
+            class="previous"
+            on:click={() => {
+              previousPage();
+            }}>&laquo; Previous</button
+          >
+          <button
+            type="button"
+            id="nextBtn"
+            class="next"
+            on:click={() => {
+              nextPage();
+            }}>Next &raquo</button
+          >
+        </div>
+        <h6>Developed by Data Aunz</h6>
       </div>
-      <h6>Developed by Data Aunz</h6>
-    </div>
-  </main4>
-{/if}
+    </main4>
+  {/if}
 
-{#if page == 4}
-  <div class="navbar" style="font-family: monospace;">
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(0);
-      }}><i class="fa fa-fw fa-home" /> Home</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(1);
-      }}><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(2);
-      }}><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
-    >
-    <a
-      href="#"
-      on:click={() => {
-        goToPage(3);
-      }}><i class="fa fa-fw fa-plus" /> Inserted Items</a
-    >
-    <a class="active" href="#"><i class="fa fa-fw fa-square" /> Show All</a>
-    <a
-      href="#"
-      on:click={() => {
-        print();
-      }}><i class="fa fa-fw fa-print" /> Print</a
-    >
-  </div>
-  <Page5 _fileNames={fileNames} />
-  <main5>
-    <br />
-    <div class="footer">
-      <div style="float:right;">
-        <br /><button
-          type="button"
-          id="prevBtn"
-          class="previous"
-          on:click={() => {
-            previousPage();
-          }}>&laquo; Previous</button
-        >
-        <button
-          type="button"
-          id="nextBtn"
-          class="next"
-          on:click={() => {
-            nextPage();
-          }}>Next &raquo</button
-        >
+  {#if page == 4}
+    <div class="navbar" style="font-family: monospace;">
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(0);
+        }}><i class="fa fa-fw fa-home" /> Home</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(1);
+        }}><i class="fa fa-fw fa-arrow-circle-up" /> Updated Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(2);
+        }}><i class="fa fa-fw fa-trash-o" /> Deleted Items</a
+      >
+      <a
+        href="#"
+        on:click={() => {
+          goToPage(3);
+        }}><i class="fa fa-fw fa-plus" /> Inserted Items</a
+      >
+      <a class="active" href="#"><i class="fa fa-fw fa-square" /> Show All</a>
+      <a
+        href="#"
+        on:click={() => {
+          print();
+        }}><i class="fa fa-fw fa-print" /> Print</a
+      >
+    </div>
+    <Page5 _fileNames={fileNames} />
+    <main5>
+      <br /><br /><br /><br /><br /><br /><br />
+      <div class="footer">
+        <div style="float:right;">
+          <br /><button
+            type="button"
+            id="prevBtn"
+            class="previous"
+            on:click={() => {
+              previousPage();
+            }}>&laquo; Previous</button
+          >
+          <button
+            type="button"
+            id="nextBtn"
+            class="next"
+            on:click={() => {
+              nextPage();
+            }}>Next &raquo</button
+          >
+        </div>
+        <h6>Data Aunz</h6>
       </div>
-      <h6>Data Aunz</h6>
-    </div>
-  </main5>
-{/if}
+    </main5>
+  {/if}
 
-{#if page == 5}
-  <Page6 />
-{/if}
+  {#if page == 5}
+    <Page6 />
+  {/if}
+</body>
 
 <style global>
   main {
@@ -360,9 +368,8 @@
 
   h1 {
     color: #80489c;
-
-    font-size: 4em;
     font-weight: bold;
+    font-size: 250%;
     text-align: center;
     font-family: monospace;
   }
@@ -383,7 +390,11 @@
     font-weight: bolder;
     text-align: center;
   }
-
+  h5 {
+    color: #000000;
+    font-size: large;
+    font-weight: 100;
+  }
   p {
     color: #379237;
     text-transform: full-width;
@@ -410,13 +421,7 @@
     background-color: #eeeeee;
     color: black;
   }
-  @media print {
-    body {
-      margin-bottom: 20px;
-      background-color: green;
-      display: block;
-    }
-  }
+
   .print {
     display: none;
   }
@@ -459,10 +464,13 @@
     background-color: #0794a7;
     color: white;
     text-align: center;
+    height: 50px;
   }
 
   body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: monospace;
+    padding-top: 30px;
+    padding-bottom: 70px;
   }
 
   .navbar {
@@ -490,6 +498,9 @@
   .active {
     background-color: rgb(0, 85, 124);
   }
+  .detail {
+    display: none;
+  }
 
   @media screen and (max-width: 600px) {
     .navbar a {
@@ -509,14 +520,20 @@
       margin: 11mm 17mm 17mm 17mm;
       size: 21.59cm 13.97cm;
     }
-    h1 {
-      display: none;
+
+    h5 {
+      display: contents;
     }
     .navbar,
     .footer {
       display: none;
     }
     .pageno {
+      display: contents;
+      bottom: 0;
+      right: 0;
+    }
+    .detail {
       display: contents;
       bottom: 0;
       right: 0;

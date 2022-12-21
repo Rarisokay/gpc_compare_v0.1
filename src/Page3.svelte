@@ -5,6 +5,7 @@
   let fileReady = false;
   let _greenInserts = [];
   let insertData1;
+  export let _fileNames;
 
   _insertData1.subscribe((value) => {
     insertData1 = value;
@@ -13,14 +14,25 @@
     _greenInserts = value;
     fileReady = true;
   });
+
+  export let input = {
+    version1: "",
+    version2: "",
+    designername: "",
+    checkername: "",
+  };
 </script>
 
 <main3>
   <h2 class="pointer">Deleted Items</h2>
+  <h5 class="detail">
+    Designer:{input.designername} &emsp Checker:{input.checkername} &emsp Version:{input.version1}
+    and &emsp {input.version2}
+  </h5>
   <p class="pointer">
     Report delete colour = <strong style="color:green">Green</strong>
   </p>
-  <input
+  <!--<input
     type="text"
     id="myInput"
     on:keyup={() => {
@@ -28,17 +40,19 @@
     }}
     placeholder="Search for names.."
     title="Type in a name"
-  />
+  /> -->
 
   <table id="myTable">
-    <tr class="header">
-      <th colspan="3">1st GPC file</th>
-    </tr>
-    <tr class="header">
-      <th>Name</th>
-      <th>Bit</th>
-      <th>Mnemonic</th>
-    </tr>
+    <thead>
+      <tr class="header">
+        <th colspan="3">{_fileNames[0].split("\\").slice(-1)}</th>
+      </tr>
+      <tr class="header">
+        <th>Name</th>
+        <th>Bit</th>
+        <th>Mnemonic</th>
+      </tr>
+    </thead>
     {#each insertData1 as data1}
       {#if _greenInserts.includes(data1.name)}
         {#each data1.bits as bit, i}
@@ -172,5 +186,37 @@
   }
   .pointer {
     cursor: pointer;
+  }
+  .detail {
+    display: none;
+  }
+  @media print {
+    @page {
+      margin: auto;
+      size: A4;
+    }
+    h1 {
+      display: none;
+    }
+
+    #myTable tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+    #myTable td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+      font-size: 12px;
+      page-break-inside: avoid;
+    }
+    .detail {
+      display: contents;
+      bottom: 0;
+      right: 0;
+    }
+    .notprint {
+      display: none;
+    }
   }
 </style>

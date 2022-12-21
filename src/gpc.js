@@ -62,7 +62,7 @@ export const readGPCFile = async (_filePath) => {
                         const bitLine = line.slice(lastIndex, i)
                         bitLine.split(" ").forEach(item => {
                             if (item !== "") {
-                                if (item[item.length-1] == 'M') {
+                                if (item[item.length-1] == 'M' && item[item.length-2] == ',') {
                                     bits.push(item.slice(0, -2))
                                 } else {
                                     mnemonics.push(item)

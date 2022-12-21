@@ -35,6 +35,18 @@
   };
   let _filename1 = "";
   let _filename2 = "";
+  // Get the current date and time
+  let currentDate = new Date();
+
+  // Format the date and time as strings
+  //let dateString = currentDate.toLocaleDateString();
+  let dateString = currentDate.toLocaleDateString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+  });
+  let [month, day, year] = dateString.split("/");
+  let formattedDate = `${day}/${month}/${year}`;
 </script>
 
 <link
@@ -48,7 +60,6 @@
       <h1 class="glow pointer">GSIM/MoviolaW Comparison Tool</h1>
       <h2 class="pointer">Please select .GPC files</h2>
       <p>Space in the filename will cause error</p>
-
       <div style="float:center;">
         <button
           type="button"
@@ -57,7 +68,7 @@
           on:click={() => {
             openFile(0);
           }}
-          value="Open File 1">OpenFile1</button
+          value="Open File 1">Open File 1</button
         >
         <p>{fileNames[0].split("\\").slice(-1)}</p>
 
@@ -68,7 +79,7 @@
           on:click={() => {
             openFile(1);
           }}
-          value="Open File 2">OpenFile2</button
+          value="Open File 2">Open File 2</button
         >
       </div>
 
@@ -123,15 +134,12 @@
         }}><i class="fa fa-fw fa-print" /> Print</a
       >
     </div>
-    <h1 class="pointer">Updated Items</h1>
-    <h5 class="detail">Designer:{_input.designername}</h5>
-    <Page2 _fileNames={fileNames} />
+
+    <Page2 _fileNames={fileNames} input={_input} />
     <main2>
       <br />
       <br />
-      <p class="pageno">
-        content: "Page " counter(page) " of " counter(pages);
-      </p>
+
       <div class="footer">
         <div style="float:right;">
           <br /><button
@@ -153,6 +161,7 @@
         </div>
         <h6>Data Aunz</h6>
       </div>
+      <footer><p>Report production date: {formattedDate}</p></footer>
     </main2>
   {/if}
 
@@ -192,7 +201,7 @@
         }}><i class="fa fa-fw fa-print" /> Print</a
       >
     </div>
-    <Page3 />
+    <Page3 _fileNames={fileNames} input={_input} />
     <main3>
       <br />
       <div class="footer">
@@ -214,7 +223,10 @@
             }}>Next &raquo</button
           >
         </div>
-      </div></main3
+      </div>
+      <footer>
+        <p>Report production date: {formattedDate}</p>
+      </footer></main3
     >
   {/if}
 
@@ -254,7 +266,7 @@
         }}><i class="fa fa-fw fa-print" /> Print</a
       >
     </div>
-    <Page4 />
+    <Page4 _fileNames={fileNames} input={_input} />
     <main4>
       <br />
       <div class="footer">
@@ -276,7 +288,10 @@
             }}>Next &raquo</button
           >
         </div>
-      </div></main4
+      </div>
+      <footer>
+        <p>Report production date: {formattedDate}</p>
+      </footer></main4
     >
   {/if}
 
@@ -314,7 +329,7 @@
         }}><i class="fa fa-fw fa-print" /> Print</a
       >
     </div>
-    <Page5 _fileNames={fileNames} />
+    <Page5 _fileNames={fileNames} input={_input} />
     <main5>
       <br /><br /><br /><br /><br /><br /><br />
       <div class="footer">
@@ -338,11 +353,38 @@
         </div>
         <h6>Data Aunz</h6>
       </div>
+      <footer>
+        <p>Report production date: {formattedDate}</p>
+      </footer>
     </main5>
   {/if}
 
   {#if page == 5}
-    <Page6 />
+    <Page6 _fileNames={fileNames} />
+    <div class="footer">
+      <div style="float:right;">
+        <br /><button
+          type="button"
+          id="prevBtn"
+          class="previous"
+          on:click={() => {
+            previousPage();
+          }}>&laquo; Previous</button
+        >
+        <button
+          type="button"
+          id="nextBtn"
+          class="next"
+          on:click={() => {
+            nextPage();
+          }}>Next &raquo</button
+        >
+      </div>
+      <h6>Data Aunz</h6>
+    </div>
+    <footer>
+      <p>Report production date: {formattedDate}</p>
+    </footer>
   {/if}
 </body>
 
@@ -353,13 +395,6 @@
     margin: 0 Auto;
     height: 100%;
     text-align: center;
-    font-family: monospace;
-  }
-  main2 {
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 Auto;
-    height: 100%;
     font-family: monospace;
   }
 
@@ -387,11 +422,7 @@
     font-weight: bolder;
     text-align: center;
   }
-  h5 {
-    color: #000000;
-    font-size: large;
-    font-weight: 100;
-  }
+
   p {
     color: #379237;
     text-transform: full-width;
@@ -419,9 +450,6 @@
     color: black;
   }
 
-  .print {
-    display: none;
-  }
   button {
     background-color: #04aa6d;
     color: #ffffff;
@@ -430,27 +458,18 @@
     font-size: medium;
     font-family: monospace;
     cursor: pointer;
+    transition: 0.2s;
   }
   button:hover {
     opacity: 0.8;
+    transform: scale(1.05);
   }
   .glow {
     font-size: 70px;
     color: #fff;
     text-align: center;
-    animation: glow 1s ease-in-out infinite alternate;
-  }
-
-  @-webkit-keyframes glow {
-    from {
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #7ba5bd,
-        0 0 40px #7ba5bd, 0 0 50px #7ba5bd, 0 0 60px #7ba5bd, 0 0 70px #7ba5bd;
-    }
-
-    to {
-      text-shadow: 0 0 20px #fff, 0 0 30px #0794a7, 0 0 40px #0794a7,
-        0 0 50px #0794a7, 0 0 60px #0794a7, 0 0 70px #0794a7, 0 0 80px #0794a7;
-    }
+    text-shadow: 0 0 20px #fff, 0 0 30px #0794a7, 0 0 40px #0794a7,
+      0 0 50px #0794a7, 0 0 60px #0794a7, 0 0 70px #0794a7, 0 0 80px #0794a7;
   }
 
   .footer {
@@ -466,7 +485,7 @@
 
   body {
     font-family: monospace;
-    padding-top: 30px;
+
     padding-bottom: 70px;
   }
 
@@ -514,12 +533,12 @@
 
   @media print {
     @page {
-      margin: 11mm 17mm 17mm 17mm;
+      margin: 0mm 0mm 10mm 0mm;
       size: 21.59cm 13.97cm;
     }
 
     h5 {
-      display: contents;
+      clear: both;
     }
     .navbar,
     .footer {
@@ -534,6 +553,14 @@
       display: contents;
       bottom: 0;
       right: 0;
+    }
+    .inserted {
+      color: rgb(239, 1, 55);
+      background-color: rgb(255, 232, 231) !important;
+      print-color-adjust: exact;
+    }
+    footer {
+      content: "Date: " attr(data-date) " Time: " attr(data-time);
     }
   }
 </style>

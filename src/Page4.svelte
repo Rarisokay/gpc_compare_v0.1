@@ -5,6 +5,7 @@
   let fileReady = false;
   let _redInserts = [];
   let insertData2;
+  export let _fileNames;
 
   _insertData2.subscribe((value) => {
     insertData2 = value;
@@ -13,15 +14,26 @@
     _redInserts = value;
     fileReady = true;
   });
+
+  export let input = {
+    version1: "",
+    version2: "",
+    designername: "",
+    checkername: "",
+  };
 </script>
 
 <main4>
   <h2 class="pointer">Inserted Items</h2>
+  <h5 class="detail">
+    Designer:{input.designername} &emsp Checker:{input.checkername} &emsp Version:{input.version1}
+    and &emsp {input.version2}
+  </h5>
   <p class="pointer">
     Report insert colour = <strong style="color:red">Red</strong>
   </p>
 
-  <input
+  <!-- <input   
     type="text"
     id="myInput"
     on:keyup={() => {
@@ -29,16 +41,18 @@
     }}
     placeholder="Search for names.."
     title="Type in a name"
-  />
+  /> -->
   <table id="myTable">
-    <tr class="header">
-      <th colspan="3">2nd GPC file</th>
-    </tr>
-    <tr class="header">
-      <th>Name</th>
-      <th>Bit</th>
-      <th>Mnemonic</th>
-    </tr>
+    <thead>
+      <tr class="header">
+        <th colspan="3">{_fileNames[1].split("\\").slice(-1)}</th>
+      </tr>
+      <tr class="header">
+        <th>Name</th>
+        <th>Bit</th>
+        <th>Mnemonic</th>
+      </tr>
+    </thead>
     {#each insertData2 as data2}
       {#if _redInserts.includes(data2.name)}
         {#each data2.bits as bit, i}
@@ -132,6 +146,9 @@
     background-color: #f4f4f4;
     padding: 0.5em;
   }
+  .detail {
+    display: none;
+  }
 
   #myInput {
     background-position: 10px 10px;
@@ -178,5 +195,34 @@
   .inserted {
     color: rgb(239, 1, 55);
     background-color: rgb(255, 232, 231);
+  }
+  @media print {
+    @page {
+      margin: auto;
+      size: A4;
+    }
+    h1 {
+      display: none;
+    }
+
+    #myTable tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+    #myTable td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+      font-size: 12px;
+      page-break-inside: avoid;
+    }
+    .detail {
+      display: contents;
+      bottom: 0;
+      right: 0;
+    }
+    .notprint {
+      display: none;
+    }
   }
 </style>

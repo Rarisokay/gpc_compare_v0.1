@@ -39,22 +39,24 @@
     window.print();
     document.body.innerHTML = originalContent;
   }
+  export let input = {
+    version1: "",
+    version2: "",
+    designername: "",
+    checkername: "",
+  };
 </script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <main5>
-  <br /><br />
-
   <h2 class="pointer">Show All Items</h2>
-  <p class="pointer">
-    Report insert colour = <strong style="color:red">Red</strong>
-  </p>
-  <p class="pointer">
-    Report delete colour = <strong style="color:green">Green</strong>
-  </p>
+  <h5 class="detail">
+    Designer:{input.designername} &emsp Checker:{input.checkername} &emsp Version:{input.version1}
+    and &emsp {input.version2}
+  </h5>
 
-  <input
+  <!--<input
     type="text"
     id="myInput"
     on:keyup={() => {
@@ -62,18 +64,20 @@
     }}
     placeholder="Search for names.."
     title="Type in a name"
-  />
+  /> -->
   <div class="row">
     <div class="column">
       <table id="myTable">
-        <tr class="header">
-          <th colspan="3">1st GPC file</th>
-        </tr>
-        <tr class="header">
-          <th>Item</th>
-          <th>Bit</th>
-          <th>Mnemonic</th>
-        </tr>
+        <thead>
+          <tr class="header">
+            <th colspan="3">{_fileNames[0].split("\\").slice(-1)}</th>
+          </tr>
+          <tr class="header">
+            <th>Item</th>
+            <th>Bit</th>
+            <th>Mnemonic</th>
+          </tr>
+        </thead>
         {#each insertData1 as data1}
           {#each data1.bits as bit, i}
             <tr>
@@ -90,14 +94,16 @@
 
     <div class="column">
       <table id="myTable">
-        <tr class="header">
-          <th colspan="3">2nd GPC file</th>
-        </tr>
-        <tr class="header">
-          <th>Name</th>
-          <th>Bit</th>
-          <th>Mnemonic</th>
-        </tr>
+        <thead>
+          <tr class="header">
+            <th colspan="3">{_fileNames[1].split("\\").slice(-1)}</th>
+          </tr>
+          <tr class="header">
+            <th>Name</th>
+            <th>Bit</th>
+            <th>Mnemonic</th>
+          </tr>
+        </thead>
         {#each insertData2 as data2}
           {#each data2.bits as bit, i}
             <tr>
@@ -212,5 +218,37 @@
   }
   .pointer {
     cursor: pointer;
+  }
+  .detail {
+    display: none;
+  }
+  @media print {
+    @page {
+      margin: auto;
+      size: A4;
+    }
+    h1 {
+      display: none;
+    }
+
+    #myTable tr {
+      page-break-inside: avoid;
+      page-break-after: auto;
+    }
+    #myTable td {
+      text-align: left;
+      padding: 8px;
+      border: 1px solid #ddd;
+      font-size: 12px;
+      page-break-inside: avoid;
+    }
+    .detail {
+      display: contents;
+      bottom: 0;
+      right: 0;
+    }
+    .notprint {
+      display: none;
+    }
   }
 </style>
